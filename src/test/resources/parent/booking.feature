@@ -23,8 +23,9 @@ Feature: Restful-Booker main operations
     * def putRes = call read('classpath:utils/api/booking-api.feature@updateBooking') ({ id: id, authToken: token, payload: testData.getBookingPayload() })
     * call read('classpath:utils/validations/common-validation.feature@status') ({ actualStatus: putRes.responseStatus, expectedStatus: 200 })
     # Partial update via PATCH with token
-    * def patchRes = call read('classpath:utils/api/booking-api.feature@patchBooking') ({ id: id, authToken: token, payload: testData.getPartialPayload() })
-    * call read('classpath:utils/validations/common-validation.feature@contains') ({ actual: patchRes.response, expected: testData.getPartialPayload() })
+    * def patchPayload = testData.getPartialPayload()
+    * def patchRes = call read('classpath:utils/api/booking-api.feature@patchBooking') ({ id: id, authToken: token, payload: patchPayload })
+    * call read('classpath:utils/validations/common-validation.feature@contains') ({ actual: patchRes.response, expected: patchPayload })
     # Delete booking with token
     * def delRes = call read('classpath:utils/api/booking-api.feature@deleteBooking') ({ id: id, authToken: token })
     * call read('classpath:utils/validations/booking-validation.feature@bookingDeleted') ({ actualStatus: delRes.responseStatus, actual: delRes.response })
@@ -33,14 +34,16 @@ Feature: Restful-Booker main operations
     # Create without additionalneeds then add via PATCH
     * def createRes = call read('classpath:utils/api/booking-api.feature@createBooking') ({ payload: testData.getBookingPayload({ includeNeeds: false }) })
     * def id = createRes.response.bookingid
-    * def patchRes = call read('classpath:utils/api/booking-api.feature@patchBooking') ({ id: id, authToken: token, payload: testData.getPatchPayload() })
-    * call read('classpath:utils/validations/common-validation.feature@contains') ({ actual: patchRes.response, expected: testData.getPatchPayload() })
+    * def patchPayload = testData.getPatchPayload()
+    * def patchRes = call read('classpath:utils/api/booking-api.feature@patchBooking') ({ id: id, authToken: token, payload: patchPayload })
+    * call read('classpath:utils/validations/common-validation.feature@contains') ({ actual: patchRes.response, expected: patchPayload })
 
   Scenario: BKG-04 - Empty field handling and update persistence
     # Create with empty firstname
     * def createRes = call read('classpath:utils/api/booking-api.feature@createBooking') ({ payload: testData.getEmptyFieldPayload() })
     * def id = createRes.response.bookingid
     # Update with token and verify persistence
-    * def patchRes = call read('classpath:utils/api/booking-api.feature@patchBooking') ({ id: id, authToken: token, payload: testData.getPartialPayload() })
+    * def patchPayload = testData.getPartialPayload()
+    * def patchRes = call read('classpath:utils/api/booking-api.feature@patchBooking') ({ id: id, authToken: token, payload: patchPayload })
     * def getRes = call read('classpath:utils/api/booking-api.feature@getBooking') ({ id: id })
-    * call read('classpath:utils/validations/common-validation.feature@contains') ({ actual: getRes.response, expected: testData.getPartialPayload() })
+    * call read('classpath:utils/validations/common-validation.feature@contains') ({ actual: getRes.response, expected: patchPayload })
