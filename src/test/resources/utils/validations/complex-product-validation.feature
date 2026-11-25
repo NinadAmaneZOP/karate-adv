@@ -4,7 +4,7 @@ Feature: Complex product validations part 1
   @highRatings
   Scenario: Filter ratings >= 4.0 and validate
     * def highRated = karate.filter(products, function(x){ return x.rating >= 4.0 })
-    * match karate.sizeOf(highRated) > 0
+    * assert karate.sizeOf(highRated) > 0
     * match each highRated contains { rating: '#? _ >= 4.0' }
 
   @expensiveStock
@@ -33,7 +33,7 @@ Feature: Complex product validations part 1
 
   @categoryCheck
   Scenario: Category scoping matches expected
-    * match each products contains { category: expectedCategory }
+    * match each products contains { category: '#(expectedCategory)' }
 
   @sortedPriceAsc
   Scenario: Prices are sorted ascending

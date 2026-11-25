@@ -5,10 +5,10 @@ function fn() {
   var needs = ['Breakfast', 'Late Checkout', 'Crib'];
 
   function getDates() {
-    var today = new Date();
-    var inDate = u.addDays(today, u.randomNumber(1, 20));
-    var outDate = u.addDays(inDate, u.randomNumber(1, 10));
-    return { checkin: u.formatDate(inDate), checkout: u.formatDate(outDate) };
+    var todayMs = new Date().getTime();
+    var inMs = u.addDays(todayMs, u.randomNumber(1, 20));
+    var outMs = u.addDays(inMs, u.randomNumber(1, 10));
+    return { checkin: u.formatDate(inMs), checkout: u.formatDate(outMs) };
   }
 
   return {
