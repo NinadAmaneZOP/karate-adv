@@ -1,0 +1,4 @@
+caseId,description,missingField,expectedStatus
+BKG-NEG-01,POST missing firstname,firstname,500
+BKG-NEG-02,POST missing lastname,lastname,500
+BKG-NEG-03,POST missing bookingdates,bookingdates,500

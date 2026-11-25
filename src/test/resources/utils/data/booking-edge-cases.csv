@@ -1,0 +1,8 @@
+caseId,description,fieldCase,expectedStatus
+BKG-EDG-01,empty firstname string,empty_first,200
+BKG-EDG-02,zero total price,zero_price,200
+BKG-EDG-03,negative total price,negative_price,200
+BKG-EDG-04,checkout date before checkin,reverse_dates,200
+BKG-EDG-05,unknown extra payload field,extra_field,200
+BKG-EDG-06,very long name string,long_name,200
+BKG-EDG-07,special characters in name,special_chars,200

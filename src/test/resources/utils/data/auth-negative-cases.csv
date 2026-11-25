@@ -1,0 +1,5 @@
+caseId,description,method,tokenHeader,expectedStatus
+AUTH-NEG-02,PUT without token,PUT,none,403
+AUTH-NEG-03,PUT with invalid token,PUT,invalid,403
+AUTH-NEG-04,DELETE without token,DELETE,none,403
+AUTH-NEG-05,DELETE with invalid token,DELETE,invalid,403

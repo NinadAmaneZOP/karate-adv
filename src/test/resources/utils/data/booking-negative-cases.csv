@@ -1,0 +1,4 @@
+caseId,description,targetId,expectedStatus
+BKG-NEG-04,non-existent booking id,99999999,404
+BKG-NEG-05,non-numeric booking id,notAnId,404
+BKG-NEG-06,negative booking id,-999,404

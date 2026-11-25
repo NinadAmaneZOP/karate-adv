@@ -1,0 +1,87 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  functional-tests:
+    name: Functional test suite
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+
+      - name: Run test cases
+        run: mvn -B test -Dtags="~@timeout"
+
+      - name: Upload Karate reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: karate-reports-functional
+          path: target/karate-reports
+          if-no-files-found: warn
+
+  load-test:
+    name: Load and stress tests (Karate parallel)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+
+      - name: Run Karate load/stress tagged scenarios
+        run: mvn -B test -Dtags="@load" -Dthreads=10
+
+      - name: Upload Karate reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: karate-reports-load
+          path: target/karate-reports
+          if-no-files-found: warn
+
+  gatling-performance-tests:
+    name: Gatling performance tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+
+      - name: Run Gatling performance simulation (local mock, conservative)
+        run: mvn -B test-compile gatling:test -Pgatling -Dgatling.simulationClass=perf.PingLoadSimulation
+
+      - name: Upload Gatling reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gatling-reports
+          path: target/gatling
+          if-no-files-found: warn
