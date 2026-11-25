@@ -4,4 +4,4 @@ Feature: Timeout error assertions
   @verifyTimeout
   Scenario: Validate timeout exception
     * match actual.success == false
-    * match actual.error == '#regex (?i).*(timeout|timed out).*'
+    * match actual.error == '#regex (?is).*(timeout|timed out).*'

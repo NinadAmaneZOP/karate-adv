@@ -16,6 +16,8 @@ Simple, modular Karate test suite for Restful-Booker and DummyJSON APIs.
 
 ## Maven Commands
 
+> **Note:** This project is configured to use **JDK 17** automatically via Maven Toolchains (`pom.xml` + `~/.m2/toolchains.xml`). You can run plain `mvn ...` commands; Maven will pick JDK 17 for compile/test.
+
 ### 1. Run All Tests
 ```bash
 mvn clean test
@@ -55,9 +57,9 @@ mvn test -Dthreads=4
 - Gatling is configured via the Maven `gatling` profile in `pom.xml` (Karate 1.4.1 + karate-gatling, no dependency upgrades).
 - Performance simulations are in `src/test/scala/perf/` and reuse Karate features/helpers.
 - Safety: perf simulations use `karate.env=perf` to target a local mock server (`localhost:18081`) started by the simulation. **Do not run heavy load/stress against public APIs without explicit authorization.**
-- Run a simulation locally (use JDK 17 for Scala/Gatling compatibility in this setup):
+- Run a simulation locally (Maven toolchain selects JDK 17 automatically):
 ```bash
-JAVA_HOME=$(/usr/libexec/java_home -v 17) mvn test-compile gatling:test -Pgatling -Dgatling.simulationClass=perf.PingLoadSimulation
+mvn test-compile gatling:test -Pgatling -Dgatling.simulationClass=perf.PingLoadSimulation
 ```
 - Available simulations: `SmallLoadSimulation`, `GradualLoadSimulation`, `ConstantArrivalSimulation`, `SustainedLoadSimulation`, `StressTestSimulation`.
 - Gatling HTML reports: `target/gatling/<simulation-name>-<timestamp>/index.html`.

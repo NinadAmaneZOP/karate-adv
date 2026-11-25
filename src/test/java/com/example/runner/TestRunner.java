@@ -9,6 +9,13 @@ public class TestRunner {
 
     @Test
     public void runKarate() {
+        int javaVersion = Runtime.version().feature();
+        if (javaVersion >= 25) {
+            Assert.fail("Karate 1.4.1 hangs on JDK " + javaVersion
+                    + " in this project. Use JDK 17 instead, e.g. "
+                    + "JAVA_HOME=$(/usr/libexec/java_home -v 17) mvn clean test");
+        }
+
         // Resolve target feature or default to parent folder
         String feature = System.getProperty("feature");
         String path = (feature != null && !feature.trim().isEmpty())
